@@ -48,7 +48,7 @@ class ThreadsController extends Controller
      */
     public function show(Thread $thread)
     {
-        //
+        return view('threads.show', compact('thread'));
     }
 
     /**
@@ -59,7 +59,7 @@ class ThreadsController extends Controller
      */
     public function edit(Thread $thread)
     {
-        //
+        
     }
 
     /**
