@@ -1,5 +1,6 @@
 # Forum 
 
+## Setup
 1. Thread
 2. Reply
 3. User 
@@ -10,3 +11,7 @@ B. A reply belongs to a thread, and belongs to a user.
 # tinker creating threads and replies
 $threads = factory(‘App\Thread’, 50)->create();
 $threads->each(function($thread){ factory(‘App\Reply’, 10)->create([’thread_id’ => $thread->id]); });
+
+## Test Driving threads
+First small feature: "a user should be able to read threads." Simple enough! We'll start with a basic test, and then scaffold the necessary views to make it pass.
+
