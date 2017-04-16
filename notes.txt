@@ -20,3 +20,9 @@ First small feature: "a user should be able to read threads." Simple enough! We'
  And that thread includes replies
  When we visit a thread page
  Then we should see the replies.
+
+an_authenticated_user_may_participate_in_forum_threads
+Given we have an authenitcated user 
+And an existing thread
+When the user adds a reply to the thread
+Then their reply should be included on the page.
