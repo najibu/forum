@@ -6,74 +6,73 @@ use Tests\TestCase;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-
 class CreateThreadsTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test  */
-    function guest_may_not_create_threads()
+    public function guest_may_not_create_threads()
     {
-      $this->withExceptionHandling();
+        $this->withExceptionHandling();
 
-       $this->get('/threads/create')
-            ->assertRedirect('/login');
+        $this->get('/threads/create')
+             ->assertRedirect('/login');
 
-       $this->post('/threads')
+        $this->post('/threads')
             ->assertRedirect('/login');
-    } 
+    }
 
     /** @test  */
-    function an_authenticated_user_can_create_new_forum_threads()
+    public function an_authenticated_user_can_create_new_forum_threads()
     {
-      // Given we have a signed in user
-      $this->signIn();
+        // Given we have a signed in user
+        $this->signIn();
 
-      // When we hit the endpoint to create a new thread
-      $thread = make('App\Thread');
+        // When we hit the endpoint to create a new thread
+        $thread = make('App\Thread');
 
-      $response = $this->post('/threads', $thread->toArray());
+        $response = $this->post('/threads', $thread->toArray());
 
-      // Then, when we visit the thread page.
-     
-      $this->get($response->headers->get('Location'))
+        // Then, when we visit the thread page.
+
+        $this->get($response->headers->get('Location'))
       // We should see the new thread
             ->assertSee($thread->title)
             ->assertSee($thread->body);
-    } 
+    }
 
     /** @test  */
-    function a_thread_requires_a_title()
+    public function a_thread_requires_a_title()
     {
-      $this->publishThread(['title' => null])
+        $this->publishThread(['title' => null])
            ->assertSessionHasErrors('title');
-    } 
+    }
 
     /** @test  */
-    function a_thread_requires_a_body()
+    public function a_thread_requires_a_body()
     {
-      $this->publishThread(['body' => null])
+        $this->publishThread(['body' => null])
            ->assertSessionHasErrors('body');
-    } 
+    }
 
     /** @test  */
-    function a_thread_requires_a_valid_channel()
+    public function a_thread_requires_a_valid_channel()
     {
-      factory('App\Channel', 2)->create();
+        factory('App\Channel', 2)->create();
 
-      $this->publishThread(['channel_id' => null])
+        $this->publishThread(['channel_id' => null])
            ->assertSessionHasErrors('channel_id');
 
-      $this->publishThread(['channel_id' => 999])
+        $this->publishThread(['channel_id' => 999])
            ->assertSessionHasErrors('channel_id');
-    } 
+    }
 
     public function publishThread($overrides=[])
     {
-      $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signIn();
 
-      $thread = make('App\Thread', $overrides);
+        $thread = make('App\Thread', $overrides);
 
-      return $this->post('/threads', $thread->toArray());
+        return $this->post('/threads', $thread->toArray());
     }
 }
