@@ -14,18 +14,4 @@ class ProfilesController extends Controller
             'activities' => Activity::feed($user)
         ]);
     }
-
-    protected function getActivity(User $user)
-    {
-        $activities =  $user->activity()
-                ->latest()
-                ->with('subject')
-                ->take(50)
-                ->get()
-                ->groupBy(function ($activity) {
-                    return $activity->created_at->format('Y-m-d');
-                });
-
-        return $activities;
-    }
 }
