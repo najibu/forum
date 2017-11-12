@@ -10,5 +10,3 @@
         {{ $activity->subject->body }}
     @endslot
 @endcomponent
-
-
