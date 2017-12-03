@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
+    /**
+     * Create a new RepliesController instance.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -36,6 +39,12 @@ class RepliesController extends Controller
         return back()->with('flash', 'Your reply has been left.');
     }
 
+
+    /**
+     * Update an existing reply.
+     *
+     * @param Reply $reply
+     */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
