@@ -3,9 +3,7 @@
 namespace Tests\Feature\Feature;
 
 use Tests\TestCase;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-
 
 class ThreadTest extends TestCase
 {
@@ -15,49 +13,83 @@ class ThreadTest extends TestCase
 
     public function setUp()
     {
-      parent::setUp();
+        parent::setUp();
 
-      $this->thread = create('App\Thread');
+        $this->thread = create('App\Thread');
     }
 
     /** @test  */
-    function a_thread_can_make_a_string_path()
+    public function a_thread_can_make_a_string_path()
     {
-      $thread = create('App\Thread');
+        $thread = create('App\Thread');
 
-      $this->assertEquals(
-          "/threads/{$thread->channel->slug}/{$thread->id}", $thread->path()
+        $this->assertEquals(
+          "/threads/{$thread->channel->slug}/{$thread->id}",
+          $thread->path()
        );
-    } 
+    }
 
     /** @test  */
-    function a_thread_has_a_creator()
+    public function a_thread_has_a_creator()
     {
-      $this->assertInstanceOf('App\User', $this->thread->creator);
-    } 
+        $this->assertInstanceOf('App\User', $this->thread->creator);
+    }
 
     /** @test  */
-    function a_thread_has_replies()
+    public function a_thread_has_replies()
     {
-      $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $this->thread->replies);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $this->thread->replies);
     }
 
     /** @test  */
     public function a_thread_can_add_a_reply()
     {
-      $this->thread->addReply([
+        $this->thread->addReply([
         'body' => 'Foobar',
         'user_id' => 1
       ]);
 
-      $this->assertCount(1, $this->thread->replies);
-    } 
+        $this->assertCount(1, $this->thread->replies);
+    }
 
     /** @test  */
-    function a_thread_belongs_to_a_channel()
+    public function a_thread_belongs_to_a_channel()
     {
-      $thread = create('App\Thread');
+        $thread = create('App\Thread');
 
-      $this->assertInstanceOf('App\Channel', $thread->channel);
-    } 
+        $this->assertInstanceOf('App\Channel', $thread->channel);
+    }
+
+    /** @test  */
+    public function a_thread_can_be_subscribed_to()
+    {
+        // Given we have a thread
+        $thread = create('App\Thread');
+
+
+        // When the user subscribes to the thread
+        $thread->subscribe($userId = 1);
+
+        // then we should be able to fetch all threads that the user has subscribed to.
+        $this->assertEquals(
+            1,
+            $thread->subscriptions()->where('user_id', $userId)->count()
+        );
+    }
+
+    /** @test  */
+    public function a_thread_can_be_unsubscribed_from()
+    {
+        // Given we have a thread
+        $thread = create('App\Thread');
+
+        // And a user who is  subscribed to the thread
+        $thread->subscribe($userId = 1);
+
+        //When a thread is unsubscribed from
+        $thread->unsubscribe($userId);
+
+        // The thread should have 0 subscriptions
+        $this->assertCount(0, $thread->subscriptions);
+    }
 }
