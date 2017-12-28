@@ -49,7 +49,7 @@ class NotificationTest extends TestCase
 
         $this->assertCount(
             1,
-            $this->getJson("/profiles/". auth()->user() ."/notifications/")->json()
+            $this->getJson("/profiles/". auth()->user()->name ."/notifications")->json()
         );
     }
 

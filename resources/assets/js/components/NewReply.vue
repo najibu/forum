@@ -3,51 +3,50 @@
         <div v-if="signedIn">
             <div class="form-group">
                 <textarea name="body"
-                    id="body"
-                    class="form-control"
-                    placeholder="Have something to say?"
-                    rows="5"
-                    required
-                    v-model="body"
-                ></textarea>
+                          id="body"
+                          class="form-control"
+                          placeholder="Have something to say?"
+                          rows="5"
+                          required
+                          v-model="body"></textarea>
             </div>
+
             <button type="submit"
-                class="btn btn-default"
-                @click="addReply"
-            >Post</button>
+                    class="btn btn-default"
+                    @click="addReply">Post</button>
         </div>
-        <div v-else>
-            <p class="text-center">
-                Please <a href="/login">sign in</a> to participate in this discussion.
-            </p>
-        </div>
+
+        <p class="text-center" v-else>
+            Please <a href="/login">sign in</a> to participate in this
+            discussion.
+        </p>
     </div>
 </template>
 
 <script>
     export default {
-        data () {
+        data() {
             return {
                 body: ''
-            }
+            };
         },
 
         computed: {
-            signedIn () {
+            signedIn() {
                 return window.App.signedIn;
             }
         },
 
         methods: {
-            addReply () {
-                axios.post(`${location.pathname}/replies`, { body: this.body })
+            addReply() {
+                axios.post(location.pathname + '/replies', { body: this.body })
                     .then(({data}) => {
-                        this.body = ''
+                        this.body = '';
 
-                        flash('Your reply has been posted.')
+                        flash('Your reply has been posted.');
 
-                        this.$emit('created', data)
-                    })
+                        this.$emit('created', data);
+                    });
             }
         }
     }

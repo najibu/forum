@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Reply;
 use App\Thread;
-use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
@@ -16,6 +15,12 @@ class RepliesController extends Controller
         $this->middleware('auth', ['except' => 'index']);
     }
 
+    /**
+     * Fetch all relevant replies.
+     *
+     * @param int    $channelId
+     * @param Thread $thread
+     */
     public function index($channelId, Thread $thread)
     {
         return $thread->replies()->paginate(20);
@@ -44,7 +49,6 @@ class RepliesController extends Controller
         return back()->with('flash', 'Your reply has been left.');
     }
 
-
     /**
      * Update an existing reply.
      *
@@ -53,6 +57,8 @@ class RepliesController extends Controller
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
+
+        $this->validate(request(), ['body' => 'required']);
 
         $reply->update(request(['body']));
     }
