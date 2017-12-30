@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Feature;
 
-use Tests\TestCase;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
@@ -45,11 +47,27 @@ class ThreadTest extends TestCase
     public function a_thread_can_add_a_reply()
     {
         $this->thread->addReply([
-        'body' => 'Foobar',
-        'user_id' => 1
-      ]);
+            'body' => 'Foobar',
+            'user_id' => 1
+        ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test  */
+    public function a_thread_notifies_all_registered_subcribers_when_a_reply_is_added()
+    {
+        Notification::fake();
+
+        $this->signIn()
+            ->thread
+            ->subscribe()
+            ->addReply([
+                'body' => 'Foobar',
+                'user_id' => 999
+            ]);
+
+        Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
     }
 
     /** @test  */
