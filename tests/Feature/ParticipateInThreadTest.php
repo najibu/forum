@@ -88,6 +88,25 @@ class ParticipateInThreadTest extends TestCase
     }
 
     /** @test  */
+    public function replies_that_contain_spam_may_not_be_created()
+    {
+        // Given we have an authenitcated user
+        $this->signIn();
+
+        // And an existing thread
+        $thread = create('App\Thread');
+
+        // When the user adds a reply to the thread
+        $reply = create('App\Reply', [
+            'body' => 'Yahoo Customer Support'
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        $this->post($thread->path().'/replies', $reply->toArray());
+    }
+
+    /** @test  */
     public function unauthorized_users_cannot_update_replies()
     {
         $this->withExceptionHandling();
