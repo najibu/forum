@@ -20,7 +20,7 @@ class Spam
 
         foreach ($invalidKeywords as $keyword) {
             if (stripos($body, $keyword) !== false) {
-                throw new Exception("Your reply contains spam.");
+                throw new \Exception("Your reply contains spam.");
             }
         }
     }
