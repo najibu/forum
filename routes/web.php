@@ -55,4 +55,4 @@ Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index'
 Route::get('api/users', 'Api\UsersController@index');
 
 // Api UserAvatarController
-Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth');
+Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
