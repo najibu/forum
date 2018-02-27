@@ -160,12 +160,15 @@ class Thread extends Model
             ->exists();
     }
 
+    /**
+     * Determine if the thread has been updated since the user last read it.
+     *
+     * @param  User $user
+     * @return bool
+     */
     public function hasUpdatesFor($user)
     {
-        // Look in the cache for the proper key.
-        // Compare that carbon instance with the $thread->updated_at
         $key = $user->visitedThreadCacheKey($this);
-        // users.50.visits.1
 
         return $this->updated_at > cache($key);
     }
