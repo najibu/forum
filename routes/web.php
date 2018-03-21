@@ -51,6 +51,9 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 
+// RegisterConfirmationController
+Route::get('/register/confirm', 'Api\RegisterConfirmationController@index');
+
 // Api UsersController
 Route::get('api/users', 'Api\UsersController@index');
 
