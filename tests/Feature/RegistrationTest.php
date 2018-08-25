@@ -50,8 +50,8 @@ class RegistrationTest extends TestCase
             ->assertRedirect(route('threads'));
 
         tap($user->fresh(), function ($user) {
-            $this->assertTrue($user§->confirmed);
-            $this->assertNull($user§->confirmation_token);
+            $this->assertTrue($user->confirmed);
+            $this->assertNull($user->confirmation_token);
         });
     }
 
