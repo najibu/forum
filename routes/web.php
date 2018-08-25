@@ -38,6 +38,9 @@ Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
 Route::patch('/replies/{reply}', 'RepliesController@update');
 Route::delete('/replies/{reply}', 'RepliesController@destroy');
 
+// BestRepliesController
+Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
+
 // Channels
 
 // FavoritesController
