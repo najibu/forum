@@ -60924,7 +60924,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editing: false,
             id: this.data.id,
             body: this.data.body,
-            isBest: false,
+            isBest: this.data.isBest,
             reply: this.data
         };
     },
@@ -60936,9 +60936,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
+    created: function created() {
+        var _this = this;
+
+        window.events.$on('best-reply-selected', function (id) {
+            _this.isBest = id === _this.id;
+        });
+    },
+
+
     methods: {
         update: function update() {
-            axios.patch('/replies/ ' + this.data.id, {
+            axios.patch('/replies/' + this.id, {
                 body: this.body
             }).catch(function (error) {
                 flash(error.response.data, 'danger');
@@ -60949,12 +60958,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             flash('Updated!');
         },
         destroy: function destroy() {
-            axios.delete('/replies/ ' + this.data.id);
+            axios.delete('/replies/ ' + this.id);
 
-            this.$emit('deleted', this.data.id);
+            this.$emit('deleted', this.id);
         },
         markBestReply: function markBestReply() {
-            this.isBest = true;
+            axios.post('/replies/' + this.id + '/best');
+
+            window.events.$emit('best-reply-selected', this.id);
         }
     }
 });
