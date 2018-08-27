@@ -80,6 +80,11 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function isAdmin()
+    {
+        return in_array($this->name, ['Najibu', 'Nsubuga']);
+    }
+
     /**
      * Record that the user has read the given thread.
      *
