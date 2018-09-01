@@ -19,6 +19,8 @@ class SubscribeToThreadsTest extends TestCase
 
         // And the user subscribes to the thread...
         $this->post($thread->path() . '/subscriptions');
+
+        $this->assertCount(1, $thread->fresh()->subscriptions);
     }
 
     /** @test  */
