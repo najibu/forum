@@ -60698,7 +60698,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             repliesCount: this.thread.replies_count,
-            locked: this.thread.locked
+            locked: this.thread.locked,
+            editing: false
         };
     },
 
@@ -60928,18 +60929,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -60987,7 +60976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             flash('Updated!');
         },
         destroy: function destroy() {
-            axios.delete('/replies/ ' + this.id);
+            axios.delete('/replies/' + this.id);
 
             this.$emit('deleted', this.id);
         },
@@ -61506,14 +61495,14 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _vm.authorize("owns ", _vm.reply.thread)
+            _vm.authorize("owns", _vm.reply.thread)
               ? _c(
                   "button",
                   {
-                    staticClass: "btn btn-xs btn-default mr-a",
+                    staticClass: "btn btn-xs btn-default ml-a",
                     on: { click: _vm.markBestReply }
                   },
-                  [_vm._v("\n          Best Reply?\n      ")]
+                  [_vm._v("Best Reply?")]
                 )
               : _vm._e()
           ])
