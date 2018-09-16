@@ -19,6 +19,9 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index');
 
+// SearchController
+Route::get('threads/search', 'SearchController@show')->name('threads.search');
+
 // ThreadsController
 Route::get('threads', 'ThreadsController@index')->name('threads');
 Route::get('threads/create', 'ThreadsController@create');
@@ -27,6 +30,7 @@ Route::patch('threads/{channel}/{thread}', 'ThreadsController@update');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::post('threads', 'ThreadsController@store')->middleware('must-be-confirmed');
 Route::get('threads/{channel}', 'ThreadsController@index');
+
 
 // LockedThreadsController
 Route::post('locked-threads/{thread}', 'LockedThreadsController@store')->name('locked-threads.store')->middleware('admin');
